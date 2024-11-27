@@ -2,7 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "shadcn-nuxt",
+    "@nuxtjs/google-fonts",
+  ],
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -14,4 +18,14 @@ export default defineNuxtConfig({
      */
     componentDir: "./components/ui",
   },
+  googleFonts: {
+    families: {
+      "Plus Jakarta Sans": true
+    }
+  },
+  app: {
+		head: {
+			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+		},
+	},
 });
