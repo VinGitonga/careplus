@@ -34,7 +34,7 @@ const emit = defineEmits(["update:modelValue"]);
 <template>
 	<FormField v-if="controlled" v-slot="{ componentField }" :name="props.name!">
 		<FormItem>
-			<FormLabel v-if="label">{{ label }}</FormLabel>
+			<FormLabel class="text-[#ABB8C4]"v-if="label">{{ label }}</FormLabel>
 			<FormControl>
 				<div v-if="isPassword" class="relative">
 					<Input :type="type === 'password' ? (showPass ? 'text' : 'password') : type" :placeholder="placeholder" v-bind="componentField" :class="cn('hide-password-toggle pr-10', props.class)" class="w-full" />
@@ -50,7 +50,7 @@ const emit = defineEmits(["update:modelValue"]);
 		</FormItem>
 	</FormField>
 	<div class="space-y-2" v-else>
-		<Label v-if="label" class="font-semibold">
+		<Label v-if="label" class="font-semibold text-[#ABB8C4]">
 			{{ label }}
 		</Label>
 		<div v-if="isPassword" class="relative">

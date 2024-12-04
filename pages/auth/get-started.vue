@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import { Button } from "~/components/ui/button";
-import { MailIcon, PhoneIcon, UserRoundIcon } from "lucide-vue-next";
+import { LoaderCircle, MailIcon, PhoneIcon, UserRoundIcon } from "lucide-vue-next";
+import { toast } from "vue-sonner";
+
+const loading = ref<boolean>(false);
+
+const onSubmit = () => {
+	loading.value = true;
+
+	setTimeout(() => {
+		loading.value = false;
+		toast.success("Form Submitted successfully.");
+	}, 1000);
+};
 </script>
 <template>
 	<Title>Get Started</Title>
@@ -33,7 +45,10 @@ import { MailIcon, PhoneIcon, UserRoundIcon } from "lucide-vue-next";
 									<PhoneIcon class="w-4 h-4" />
 								</template>
 							</AppFormInput>
-							<Button class="bg-[#24AE7C] w-full hover:bg-[#127D6B] transition-colors duration-300 ease-in-out h-12 text-lg font-semibold" size="lg">Get Started</Button>
+							<Button :disabled="loading" class="bg-[#24AE7C] w-full hover:bg-[#127D6B] transition-colors duration-300 ease-in-out h-12 text-lg font-semibold" size="lg" @click="onSubmit()">
+								<LoaderCircle class="w-20 h-20 animate-spin mr-2" v-if="loading" />
+								Get Started</Button
+							>
 						</div>
 					</div>
 					<div class="">
@@ -42,7 +57,7 @@ import { MailIcon, PhoneIcon, UserRoundIcon } from "lucide-vue-next";
 				</div>
 			</div>
 			<div class="hidden md:block md:col-span-1 h-screen">
-				<img src="/images/Illustration.png" alt="" class="h-full w-full object-cover" />
+				<img src="/images/Illustration.png" alt="" class="h-full w-full object-cover rounded-l-3xl" />
 			</div>
 		</div>
 	</div>

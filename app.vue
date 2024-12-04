@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Toaster } from '@/components/ui/sonner'
 useHead({
 	meta: [
 		{
@@ -16,6 +17,7 @@ useHead({
 	<div class="font-sans min-h-screen antialiased transition-colors duration-200 ease-in-out">
 		<NuxtLayout>
 			<NuxtPage />
+			<Toaster />
 		</NuxtLayout>
 	</div>
 </template>
