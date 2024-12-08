@@ -56,7 +56,7 @@ const handleOtpComplete = (vals: string[]) => {
 };
 </script>
 <template>
-	<Title>Get Started</Title>
+	<Title>Login</Title>
 	<div class="h-screen bg-[#131619] text-white">
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-5">
 			<div class="col-auto md:col-span-1">
