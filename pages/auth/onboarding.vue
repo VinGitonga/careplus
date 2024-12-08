@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { DateValue } from "@internationalized/date";
-import { MailIcon, PhoneIcon } from "lucide-vue-next";
+import { MailIcon, PhoneIcon, LoaderCircle } from "lucide-vue-next";
 import type { DefineComponent } from "vue";
+import { toast } from "vue-sonner";
 import type { IOption } from "~/types/Option";
 
 const dob = ref<DateValue>();
@@ -37,9 +38,35 @@ const options: (IOption & { icon?: DefineComponent | string })[] = [
 		icon: "https://api.dicebear.com/9.x/adventurer/svg?seed=riley",
 	},
 ];
+
+const termsOptions = [
+	{
+		label: "I consent to receive treatment for my health condition.",
+		value: "receive-treatment",
+	},
+	{
+		label: "I consent to the use and disclosure of my health information for treatment purposes.",
+		value: "disclose-health-info",
+	},
+	{
+		label: "I acknowledge that I have reviewed and agree to the privacy policy",
+		value: "agree-privacy-policy",
+	},
+] satisfies IOption[];
 const physician = ref<string>("");
 const identificationType = ref<string>("");
 const files = ref<File[]>();
+const acceptedTerms = ref<string[]>([]);
+const loading = ref<boolean>(false);
+
+const onSubmit = async () => {
+	loading.value = true;
+
+	setTimeout(() => {
+		loading.value = false;
+		toast.success("Form Submitted successfully.");
+	}, 3000);
+};
 </script>
 <template>
 	<Title>Onboarding</Title>
@@ -91,7 +118,7 @@ const files = ref<File[]>();
 								<AppFormInput label="Insurance Provider" placeholder="ex: BlueCross" />
 								<AppFormInput label="Insurance Policy Number" placeholder="ex: ERT-171717181" />
 								<AppFormTextArea label="Allergies (if any)" placeholder="ex: Peanuts, Penicillin, Pollen" />
-								<AppFormTextArea label="Current Medications" placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg" />
+								<AppFormTextArea label="Current Medications" placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg" class="h-auto" />
 								<AppFormTextArea label="Family medical history (if relevant)" placeholder="ex: Mother had breast cancer" />
 								<AppFormTextArea label="Past medical history" placeholder="ex: Asthma diagnosis in childhood" />
 							</div>
@@ -104,6 +131,13 @@ const files = ref<File[]>();
 						</div>
 						<div class="mt-16 space-y-7">
 							<h1 class="text-3xl font-bold">Consent and Privacy</h1>
+							<AppFormCheckbox :options="termsOptions" v-model:model-value="acceptedTerms" />
+						</div>
+						<div class="mt-16 space-y-7">
+							<Button :disabled="loading" class="bg-[#24AE7C] w-full hover:bg-[#127D6B] transition-colors duration-300 ease-in-out h-12 text-lg font-semibold" size="lg" @click="onSubmit()">
+								<LoaderCircle class="w-20 h-20 animate-spin mr-2" v-if="loading" />
+								Submit and Continue</Button
+							>
 						</div>
 					</div>
 				</div>

@@ -13,9 +13,11 @@ interface IProps {
 	modelValue?: string[];
 }
 
-withDefaults(defineProps<IProps>(), { controlled: false });
+const props=withDefaults(defineProps<IProps>(), { controlled: false });
 
 const emit = defineEmits(["update:modelValue"]);
+
+console.log('modelValue', props.modelValue)
 </script>
 <template>
 	<FormField :name="name!" v-if="controlled">
@@ -46,13 +48,19 @@ const emit = defineEmits(["update:modelValue"]);
 				{{ subLabel }}
 			</p>
 		</div>
-		<div :key="item.value" v-for="item in options">
-			<div class="flex flex-row items-start space-x-3 space-y-0">
+		<div :key="item.value" v-for="item in options" class="">
+			<div class="flex flex-row items-center space-x-3 space-y-0 mb-5">
 				<Checkbox
                     :value="item.value"
 					:checked="modelValue?.includes(item.value)"
                     :unchecked-value="false"
-					@update:checked="emit('update:modelValue', $event)" />
+					@update:checked="val => {
+						if (val) {
+							emit('update:modelValue', [...modelValue!, item.value]); // Add value if checked
+						} else {
+							emit('update:modelValue', modelValue!.filter(value => value !== item.value)); // Remove value if unchecked
+						}
+					}" />
 				<Label class="text-[#ABB8C4] font-normal">
 					{{ item.label }}
 				</Label>
