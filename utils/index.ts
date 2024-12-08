@@ -4,3 +4,5 @@ export const generateOptions = (options: string[], capitalizeText = false) => {
 		return { label: capitalizeText ? capitalize(option) : option, value: option };
 	});
 };
+
+export const phoneNoRegex = /^0[17]\d{8}$/;

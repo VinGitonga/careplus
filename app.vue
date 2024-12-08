@@ -8,7 +8,7 @@ useHead({
 		},
 	],
 	titleTemplate: (titleChunk) => {
-		return titleChunk ? `${titleChunk} - CarePlus` : "CarePlus";
+		return titleChunk ? `${titleChunk} - CarePulse` : "CarePulse";
 	},
 	link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
