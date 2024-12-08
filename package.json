@@ -16,6 +16,7 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@radix-icons/vue": "^1.0.0",
+    "@tanstack/vue-table": "^8.20.5",
     "@vee-validate/zod": "^4.14.7",
     "@vueuse/core": "^12.0.0",
     "class-variance-authority": "^0.7.1",
