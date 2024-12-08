@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TData, TValue">
-import { getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable, type ColumnDef, type ColumnFiltersState, type SortingState, type VisibilityState } from "@tanstack/vue-table";
+import { FlexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable, type ColumnDef, type ColumnFiltersState, type SortingState, type VisibilityState } from "@tanstack/vue-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -63,17 +63,17 @@ const table = useVueTable({
 		<div class="flex items-center py-4" v-if="props.showTopContent">
 			<Input
 				class="max-w-sm"
-				placeholder="Filter emails ..."
+                :placeholder="`Filter ${props.searchColumnFilter ?? ''}`"
 				:model-value="table.getColumn(props.searchColumnFilter!)?.getFilterValue() as string"
 				@update:model-value="table.getColumn(props.searchColumnFilter!)?.setFilterValue($event)" />
 			<DropdownMenu>
 				<DropdownMenuTrigger as-child>
-					<Button variant="outline" class="ml-auto">
+					<Button variant="outline" class="ml-auto bg-gray-600 hover:bg-gray-700 text-white hover:text-gray-100">
 						Columns
 						<ChevronDown class="w-4 h-4 ml-2" />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end" class="font-inconsolata">
+				<DropdownMenuContent align="end" class="font-sans bg-gray-700 text-white">
 					<DropdownMenuCheckboxItem
 						v-for="column in table.getAllColumns().filter((col) => col.getCanHide())"
 						:key="column.id"
@@ -91,7 +91,7 @@ const table = useVueTable({
 		</div>
 		<div class="border rounded-lg">
 			<Table>
-				<TableHeader>
+				<TableHeader class="text-white">
 					<TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
 						<TableHead v-for="header in headerGroup.headers" :key="header.id">
 							<FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
@@ -125,8 +125,8 @@ const table = useVueTable({
 			<div class="flex-1 text-sm text-muted-foreground">{{ table.getFilteredSelectedRowModel().rows.length }} of {{ table.getFilteredRowModel().rows.length }} row(s) selected</div>
 		</div>
 		<div v-if="props.showPagination" class="flex items-center justify-end py-4 space-x-2">
-			<Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()"> Previous </Button>
-			<Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">Next</Button>
+			<Button class="bg-gray-700 text-white" variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()"> Previous </Button>
+			<Button variant="outline" size="sm" class="bg-gray-700 text-white" :disabled="!table.getCanNextPage()" @click="table.nextPage()">Next</Button>
 		</div>
 	</div>
 </template>
