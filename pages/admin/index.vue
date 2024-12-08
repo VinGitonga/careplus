@@ -9,6 +9,7 @@ import Badge from "~/components/ui/badge/Badge.vue";
 import Button from "~/components/ui/button/Button.vue";
 import { appointmentsData } from "~/data/appointments-data";
 import { getInitials } from "~/utils";
+import ConfirmAppointmentDialog from "~/components/confirm/appointment-dialog.vue";
 
 const df = new DateFormatter("en-US", {
 	dateStyle: "long",
@@ -75,7 +76,8 @@ const columns: ColumnDef<IAppointment>[] = [
 		enableHiding: false,
 		header: () => h("div", { class: "capitalize text-white" }, "Actions"),
 		cell({ row }) {
-			const scheduleBtn = h(Button, { variant: "ghost", class: "text-[#24AE7C]" }, "Schedule");
+			// const scheduleBtn = h(Button, { variant: "ghost", class: "text-[#24AE7C]" }, "Schedule");
+			const scheduleBtn = h(ConfirmAppointmentDialog, { appointmentItem: row.original });
 			const cancelBtn = h(Button, { variant: "ghost" }, "Cancel");
 			const containerDiv = h("div", { class: "flex items-center gap-2" }, { default: () => [scheduleBtn, cancelBtn] });
 
