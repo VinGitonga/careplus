@@ -23,3 +23,4 @@ export const userRelations = relations(usersTable, ({ one }) => ({
 }));
 
 export type InsertUser = Pick<typeof usersTable.$inferInsert, "email" | "name" | "phoneNo" | "role">
+export type SelectUser = typeof usersTable.$inferSelect

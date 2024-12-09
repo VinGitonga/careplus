@@ -1,12 +1,11 @@
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
+import { remember } from "@epic-web/remember";
 
-const { db } = useRuntimeConfig();
+const { db: envDB } = useRuntimeConfig();
 
-export default async function getDB() {
-	const client = postgres(db.url);
+const pool = postgres(envDB.url);
 
-	const connectedDb = drizzle({ client });
+const db = remember("db-client", () => drizzle({ client: pool }));
 
-	return connectedDb;
-}
+export { db };
