@@ -17,7 +17,6 @@ const props=withDefaults(defineProps<IProps>(), { controlled: false });
 
 const emit = defineEmits(["update:modelValue"]);
 
-console.log('modelValue', props.modelValue)
 </script>
 <template>
 	<FormField :name="name!" v-if="controlled">
