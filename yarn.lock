@@ -2785,6 +2785,11 @@ drizzle-orm@^0.37.0:
   resolved "https://registry.yarnpkg.com/drizzle-orm/-/drizzle-orm-0.37.0.tgz#313c508164922cf99cee5fa17381c503035538fa"
   integrity sha512-AsCNACQ/T2CyZUkrBRUqFT2ibHJ9ZHz3+lzYJFFn3hnj7ylIeItMz5kacRG89uSE74nXYShqehr6u+6ks4JR1A==
 
+drizzle-zod@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/drizzle-zod/-/drizzle-zod-0.6.0.tgz#750559559a3866a8b95b273068d2fead171012f4"
+  integrity sha512-7K1k7Y/5Jw9D4cTlrHL3mRTLg3oaglbi4VvBIYmSAtMvYkgqvusPtra7cnntMCe1r1cBcwxhlEkfiNdU23lp2g==
+
 duplexer@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"

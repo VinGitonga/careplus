@@ -3,6 +3,7 @@ import { baseSchema } from "./base";
 import { relations } from "drizzle-orm";
 import { usersTable } from "./user.schema";
 import { doctorsTable } from "./doctor.schema";
+import { createInsertSchema } from "drizzle-zod";
 
 export const patientsTable = pgTable("patients", {
 	...baseSchema,
@@ -35,3 +36,5 @@ export const patientInfoRelations = relations(patientsTable, ({ one }) => ({
 		references: [doctorsTable.id],
 	}),
 }));
+
+export const patientInsertSchema = createInsertSchema(patientsTable);
