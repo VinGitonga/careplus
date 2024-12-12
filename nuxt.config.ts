@@ -3,9 +3,10 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
   modules: [
-    "@nuxtjs/tailwindcss",
-    "shadcn-nuxt",
-    "@nuxtjs/google-fonts",
+   "@nuxtjs/tailwindcss",
+   "shadcn-nuxt",
+   "@nuxtjs/google-fonts",
+   "@sidebase/nuxt-auth"
   ],
   shadcn: {
     /**
@@ -24,13 +25,25 @@ export default defineNuxtConfig({
     }
   },
   app: {
-		head: {
-			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
-		},
-	},
+        head: {
+            link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+        },
+    },
   runtimeConfig: {
     db: {
       url: process.env.NEW_DB_URL!,
+    },
+    auth: {
+      secret: process.env.AUTH_SECRET!,
+      origin: process.env.AUTH_ORIGIN!,
     }
+  },
+  auth: {
+    provider:{
+      type: "authjs"
+    }
+  },
+  devServer: {
+    port: 6099
   }
 });
