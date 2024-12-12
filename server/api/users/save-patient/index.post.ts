@@ -3,8 +3,6 @@ import { z } from "zod";
 import { db } from "~/server/db/get-db";
 import { patientInsertSchema, patientsTable } from "~/server/schemas/patient.schema";
 import { userInsertSchema, usersTable } from "~/server/schemas/user.schema";
-import { createApiError } from "~/server/utils/error";
-import validator from "~/server/utils/validator";
 import { ApiResponseType, IApiResponseType } from "~/types/Api";
 
 export default defineEventHandler(async (event): Promise<IApiResponseType> => {
