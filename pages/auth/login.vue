@@ -44,14 +44,12 @@ const { handleSubmit, resetForm } = useForm({
 const onSubmit = handleSubmit(async (data) => {
 	loading.value = true;
 
-	const { data: rawResp, error } = await useFetch<IApiResponseType, TApiError>("/api/users/otp/request", {
+	const { data: _, error } = await useFetch<IApiResponseType, TApiError>("/api/users/otp/request", {
 		method: "POST",
 		body: { ...data },
 	});
 
 	const errVal = error.value;
-	console.log("rawResp", rawResp.value);
-	console.log("errVal", errVal?.data);
 
 	if (!errVal) {
 		toast.success("OTP sent successfully.");
