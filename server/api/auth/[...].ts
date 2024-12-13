@@ -39,7 +39,13 @@ export default NuxtAuthHandler({
 					.leftJoin(doctorsTable, eq(usersTable.id, doctorsTable.userId))
 					.limit(1);
 
-				return updatedUser?.[0];
+				const patientInfo = updatedUser?.[0].patients;
+				const doctorInfo = updatedUser?.[0].doctors;
+				const userData = updatedUser?.[0].users;
+
+				const finalData = { ...userData, patientInfo, doctorInfo };
+
+				return finalData
 			},
 		}),
 	],

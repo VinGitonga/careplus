@@ -15,6 +15,13 @@ const df = new DateFormatter("en-US", {
 	dateStyle: "long",
 });
 
+const { data } = useAuth();
+
+const account = computed(() => {
+	console.log(data.value)
+	return data.value
+})
+
 const icons = {
 	[AppointmentStatus.SCHEDULED]: {
 		icon: h(CheckIcon, { class: "text-[#24AE7C] w-4 h-4 mr-2" }),
@@ -129,7 +136,10 @@ const columns: ColumnDef<IAppointment>[] = [
 			</div>
 		</div>
 		<div class="mt-10">
-			<DataTable :columns="columns" :data="appointmentsData" />
+			<p>
+				{{ account?.user?.id }}
+			</p>
+			<!-- <DataTable :columns="columns" :data="appointmentsData" /> -->
 		</div>
 	</div>
 </template>
