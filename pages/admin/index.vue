@@ -18,8 +18,7 @@ const df = new DateFormatter("en-US", {
 const { data } = useAuth();
 
 const account = computed(() => {
-	console.log(data.value)
-	return data.value
+	return data.value?.user
 })
 
 const icons = {
@@ -97,7 +96,7 @@ const columns: ColumnDef<IAppointment>[] = [
 	<Title>Admin</Title>
 	<div class="text-white font-sans">
 		<div class="mb-10 space-y-2">
-			<h1 class="text-4xl font-bold">Welcome, Admin</h1>
+			<h1 class="text-4xl font-bold">Welcome, {{ account?.name }}</h1>
 			<p class="text-lg font-medium text-[#ABB8C4]">Start day with managing new appointments</p>
 		</div>
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
@@ -136,9 +135,6 @@ const columns: ColumnDef<IAppointment>[] = [
 			</div>
 		</div>
 		<div class="mt-10">
-			<p>
-				{{ account?.user?.id }}
-			</p>
 			<!-- <DataTable :columns="columns" :data="appointmentsData" /> -->
 		</div>
 	</div>
