@@ -16,4 +16,6 @@ export const doctorInfoRelations = relations(doctorsTable, ({ one, many }) => ({
 	patients: many(patientsTable),
 }));
 
+export type SelectDoctor = typeof doctorsTable.$inferSelect
+
 export const doctorInsertSchema = createInsertSchema(doctorsTable);

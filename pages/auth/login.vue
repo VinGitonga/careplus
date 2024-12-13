@@ -8,11 +8,16 @@ import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import { phoneNoRegex } from "~/utils";
+import type { IApiResponseType } from "~/types/Api";
+import type { TApiError } from "~/types/Error";
 
 const loading = ref<boolean>(false);
 const otpDialog = ref<boolean>(false);
 const otpValue = ref<string[]>([]);
 const isVerifyingOTP = ref<boolean>(false);
+
+const { signIn } = useAuth();
+const router = useRouter();
 
 const loginFormObject = z.object({
 	email: z.string().email({ message: "Invalid Email Address" }),
@@ -26,6 +31,8 @@ const loginFormObject = z.object({
 
 const formSchema = toTypedSchema(loginFormObject);
 
+const validatedFormData = ref<{ email: string; phoneNo: string }>();
+
 const { handleSubmit, resetForm } = useForm({
 	validationSchema: formSchema,
 	initialValues: {
@@ -34,25 +41,55 @@ const { handleSubmit, resetForm } = useForm({
 	},
 });
 
-const onSubmit = handleSubmit(() => {
+const onSubmit = handleSubmit(async (data) => {
 	loading.value = true;
 
-	setTimeout(() => {
-		loading.value = false;
+	const { data: rawResp, error } = await useFetch<IApiResponseType, TApiError>("/api/users/otp/request", {
+		method: "POST",
+		body: { ...data },
+	});
+
+	const errVal = error.value;
+	console.log("rawResp", rawResp.value);
+	console.log("errVal", errVal?.data);
+
+	if (!errVal) {
 		toast.success("OTP sent successfully.");
 		otpDialog.value = true;
-		resetForm();
-	}, 1000);
+		validatedFormData.value = { ...data };
+		loading.value = false
+	} else {
+		toast.error(errVal?.data.data?.msg ?? "Something went wrong");
+		loading.value = false
+	}
 });
 
-const handleOtpComplete = (vals: string[]) => {
+const handleOtpComplete = async (vals: string[]) => {
 	isVerifyingOTP.value = true;
 	const id = toast.loading("Verifying OTP ...");
-	setTimeout(() => {
+
+	try {
+		const resp = await signIn("credentials", {
+			email: validatedFormData.value?.email,
+			phoneNo: validatedFormData.value?.phoneNo,
+			otp: vals.join("").toUpperCase(),
+			redirect: false,
+		});
+
+		if (resp?.error) {
+			toast.error(resp?.error ?? "Invalid OTP", { id });
+		} else {
+			toast.success("OTP Verified successfully", { id });
+			otpDialog.value = false;
+			resetForm();
+			// redirect to the appropriate page
+			router.push("/admin");
+		}
+	} catch (err: any) {
+		toast.error(err?.response?.data?.msg ?? err?.message ?? "Invalid OTP");
+	} finally {
 		isVerifyingOTP.value = false;
-		toast.success("OTP Verified successfully.", { id });
-		otpDialog.value = false;
-	}, 1000);
+	}
 };
 </script>
 <template>
@@ -77,7 +114,7 @@ const handleOtpComplete = (vals: string[]) => {
 										<MailIcon class="w-4 h-4" />
 									</template>
 								</AppFormInput>
-								<AppFormInput name="phoneNo" controlled label="Phone number" placeholder="+254704260663" class="focus:border-[#82ac9d] focus:border-4">
+								<AppFormInput name="phoneNo" controlled label="Phone number" placeholder="0704260663" class="focus:border-[#82ac9d] focus:border-4">
 									<template v-slot:leftIcon>
 										<PhoneIcon class="w-4 h-4" />
 									</template>
@@ -113,7 +150,10 @@ const handleOtpComplete = (vals: string[]) => {
 				</PinInput>
 			</div>
 			<DialogFooter class="justify-center w-full">
-				<Button class="w-full bg-[#24AE7C] hover:bg-[#127D6B] transition-colors duration-300 ease-in-out" type="submit"> Verify </Button>
+				<Button :disabled="isVerifyingOTP || otpValue.length < 6" class="w-full bg-[#24AE7C] hover:bg-[#127D6B] transition-colors duration-300 ease-in-out">
+					<LoaderCircle class="w-20 h-20 animate-spin mr-2" v-if="isVerifyingOTP" />
+					Verify
+				</Button>
 			</DialogFooter>
 		</DialogContent>
 	</Dialog>

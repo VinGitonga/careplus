@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { db } from "~/server/db/get-db";
 import { usersTable } from "~/server/schemas/user.schema";
 import { ApiResponseType, IApiResponseType } from "~/types/Api";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 import { EmailTemplate, sendEmail } from "~/server/emails/send";
 
 export default defineEventHandler(async (event): Promise<IApiResponseType> => {
@@ -19,15 +19,17 @@ export default defineEventHandler(async (event): Promise<IApiResponseType> => {
 	}
 
 	// generate otp of size 6
-	const generatedOTP = nanoid(6);
+	const nanoid = customAlphabet("0123456789ZYXUIOBCDJM", 6);
 
-	const uppercaseOTP = generatedOTP.toUpperCase();
+	const uppercaseOTP = nanoid().toUpperCase();
 
 	await db.update(usersTable).set({ otp: uppercaseOTP }).where(eq(usersTable.id, user?.[0].id));
-	
+
 	try {
 		await sendEmail({ to: [user?.[0].email], subject: "Sign In OTP", template: EmailTemplate.OTP, data: { name: user?.[0].name, otp: uppercaseOTP } });
-	} catch (err) {}
+	} catch (err) {
+		console.log("err", err);
+	}
 
 	setResponseStatus(event, 200, "OK");
 	return {

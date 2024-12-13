@@ -37,4 +37,6 @@ export const patientInfoRelations = relations(patientsTable, ({ one }) => ({
 	}),
 }));
 
+export type SelectPatient = typeof patientsTable.$inferSelect
+
 export const patientInsertSchema = createInsertSchema(patientsTable);

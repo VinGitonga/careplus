@@ -51,8 +51,8 @@ export default NuxtAuthHandler({
 		},
 		async session({ session, token }) {
 			session.user = {
-				...session.user,
 				...token,
+				...((session.user as any) ?? {}),
 			};
 
 			return session;

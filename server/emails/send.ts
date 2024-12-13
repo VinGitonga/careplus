@@ -1,7 +1,5 @@
 import { Resend } from "resend";
-import * as path from "path";
-import * as fs from "fs";
-import { compile } from "handlebars";
+import handlebars from "handlebars";
 
 export enum EmailTemplate {
 	WELCOME = "welcome",
@@ -15,14 +13,12 @@ interface ISendEmailOptions {
 	data?: Record<string, any>;
 }
 
-const templatesPath = path.join(__dirname, "../templates/emails");
-
 const resend = new Resend(useRuntimeConfig().resend.apiKey);
 
 export const sendEmail = async (options: ISendEmailOptions) => {
-	const templateString = fs.readFileSync(path.join(templatesPath, `${options.template}.html`), "utf-8");
+	const templateItem = await useStorage("assets:server").getItem(`templates/emails/${options.template}.html`).then((val) => val?.toString())
 
-	const compiledTemplate = compile(templateString);
+	const compiledTemplate = handlebars.compile(templateItem);
 
 	const emittedHtml = compiledTemplate(options.data);
 
