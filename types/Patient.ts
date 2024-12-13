@@ -1,4 +1,6 @@
-import type { IDoctor } from "./Doctor";
+import type { SelectPatient } from "~/server/schemas/patient.schema";
+import type { IDoctor, TDoctorData } from "./Doctor";
+import type { IUser } from "./User";
 
 export interface IPatient {
 	id: string;
@@ -26,4 +28,9 @@ export interface IPatient {
 	acceptedReceiveTreatment: boolean;
 	acceptedDisclosureOfInformation: boolean;
 	acceptedPrivacyPolicy: boolean;
+}
+
+export interface TPatientData extends SelectPatient {
+	user?: IUser;
+	primaryPhysician?: TDoctorData;
 }
