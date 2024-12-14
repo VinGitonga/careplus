@@ -18,8 +18,8 @@ const df = new DateFormatter("en-US", {
 const { data } = useAuth();
 
 const account = computed(() => {
-	return data.value?.user
-})
+	return data.value?.user;
+});
 
 const icons = {
 	[AppointmentStatus.SCHEDULED]: {
@@ -38,6 +38,8 @@ const icons = {
 		bgColor: "bg-[#152432]",
 	},
 };
+
+const onSaveDoctor = async () => {};
 
 const columns: ColumnDef<IAppointment>[] = [
 	{
@@ -95,9 +97,12 @@ const columns: ColumnDef<IAppointment>[] = [
 <template>
 	<Title>Admin</Title>
 	<div class="text-white font-sans">
-		<div class="mb-10 space-y-2">
-			<h1 class="text-4xl font-bold">Welcome, {{ account?.name }}</h1>
-			<p class="text-lg font-medium text-[#ABB8C4]">Start day with managing new appointments</p>
+		<div class="flex items-center justify-between">
+			<div class="mb-10 space-y-2">
+				<h1 class="text-4xl font-bold">Welcome, {{ account?.name }}</h1>
+				<p class="text-lg font-medium text-[#ABB8C4]">Start day with managing new appointments</p>
+			</div>
+			<NewDoctorDialog @on-save="onSaveDoctor" />
 		</div>
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
 			<div class="px-6 py-6 border-t border-t-white/10 w-full rounded-xl bg-gradient-to-r from-[#D7EDED29] from-[16%] to-[#CCEBEB00]">

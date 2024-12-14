@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Button } from "~/components/ui/button";
-
 const { status } = useAuth();
 const computedStatus = computed(() => status.value);
 const router = useRouter();
