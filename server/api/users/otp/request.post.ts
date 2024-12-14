@@ -19,7 +19,7 @@ export default defineEventHandler(async (event): Promise<IApiResponseType> => {
 	}
 
 	// generate otp of size 6
-	const nanoid = customAlphabet("0123456789ZYXUIOBCDJM", 6);
+	const nanoid = customAlphabet("0123456789ZYXUIQBCDJMPRSH", 6);
 
 	const uppercaseOTP = nanoid().toUpperCase();
 

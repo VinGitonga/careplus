@@ -23,6 +23,10 @@ export default defineNuxtConfig({
 		head: {
 			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 		},
+		layoutTransition: {
+			name: "transition-all",
+			mode: "out-in"
+		}
 	},
 	runtimeConfig: {
 		db: {

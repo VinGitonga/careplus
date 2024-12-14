@@ -135,7 +135,7 @@ const handleOtpComplete = async (vals: string[]) => {
 		</div>
 	</div>
 	<Dialog v-model:open="otpDialog">
-		<DialogContent class="sm:max-w-[425px]">
+		<DialogContent class="sm:max-w-[425px] bg-[#181d23] text-white border-none">
 			<DialogHeader>
 				<DialogTitle>Verify OTP</DialogTitle>
 				<DialogDescription>Please enter the OTP sent to your registered mobile number.</DialogDescription>
@@ -143,7 +143,7 @@ const handleOtpComplete = async (vals: string[]) => {
 			<div class="grid gap-4 py-4">
 				<PinInput class="w-full" id="pin-input" v-model="otpValue" placeholder="○" @complete="handleOtpComplete">
 					<PinInputGroup class="w-full">
-						<PinInputInput class="h-16 w-16 focus:ring-[#24AE7C] text-lg text-[#24AE7C] font-bold" v-for="(id, index) in 6" :key="id" :index="index" />
+						<PinInputInput class="h-16 w-16 focus:ring-[#24AE7C] text-lg text-[#24AE7C] font-bold bg-[#181d23]" v-for="(id, index) in 6" :key="id" :index="index" />
 					</PinInputGroup>
 				</PinInput>
 			</div>

@@ -11,6 +11,7 @@ import type { TApiError } from "~/types/Error";
 
 const loading = ref<boolean>(false);
 const emits = defineEmits<{ onSave: [] }>();
+const { isOpen, onClose, onOpen } = useDisclosure();
 
 const formObject = z.object({
 	name: z.string().min(1, "Name is required"),
@@ -65,47 +66,48 @@ const onSubmit = handleSubmit(async (data) => {
 		resetForm();
 		loading.value = false;
 		emits("onSave");
+		onClose()
 	} else {
 		toast.error(errorVal.data.data?.msg ?? "Unable to save doctor information at the moment", { id });
 	}
 });
 </script>
 <template>
-	<Dialog>
-		<DialogTrigger as-child>
-			<Button> New Doctor </Button>
-		</DialogTrigger>
-		<DialogContent class="sm:max-w-[600px] font-sans bg-[#181d23] text-white">
-			<form @submit="onSubmit">
-				<DialogHeader>
-					<DialogTitle>Onboard New Doctor</DialogTitle>
-					<DialogDescription class="text-gray-300 text-sm"> Add new doctor information here. Click save when you're done. </DialogDescription>
-				</DialogHeader>
-				<div class="grid gap-4 py-4">
-					<AppFormInput name="name" controlled label="Name" placeholder="Adrian Hajdin" class="focus:border-[#82ac9d] focus:border-4 transition-colors ease-in-out duration-500">
-						<template v-slot:leftIcon>
-							<UserRoundIcon class="w-4 h-4" />
-						</template>
-					</AppFormInput>
-					<AppFormInput name="email" controlled label="Email address" placeholder="adrian@jsmastery.org" class="focus:border-[#82ac9d] focus:border-4 duration-500 ease-in-out">
-						<template v-slot:leftIcon>
-							<MailIcon class="w-4 h-4" />
-						</template>
-					</AppFormInput>
-					<AppFormInput name="phoneNo" label="Phone number" controlled placeholder="0704260663" class="focus:border-[#82ac9d] focus:border-4 duration-500 ease-in-out">
-						<template v-slot:leftIcon>
-							<PhoneIcon class="w-4 h-4" />
-						</template>
-					</AppFormInput>
-					<AppFormInput name="speciality" label="Speciality" controlled placeholder="e.g. Dentistry, Pharmacists" class="focus:border-[#82ac9d] focus:border-4 duration-500 ease-in-out transition-colors" />
-				</div>
-				<DialogFooter>
-					<Button :disabled="loading" class="bg-[#24AE7C] hover:bg-[#127D6B] transition-colors duration-300 ease-in-out h-12 text-base font-semibold" size="lg" type="submit">
-						<LoaderCircle class="w-20 h-20 animate-spin mr-2" v-if="loading" />
-						Save</Button
-					>
-				</DialogFooter>
-			</form>
-		</DialogContent>
-	</Dialog>
+	<div>
+		<Button @click="onOpen" > New Doctor </Button>
+		<Dialog v-model:open="isOpen">
+			<DialogContent class="sm:max-w-[600px] font-sans bg-[#181d23] text-white border-none">
+				<form @submit="onSubmit">
+					<DialogHeader>
+						<DialogTitle>Onboard New Doctor</DialogTitle>
+						<DialogDescription class="text-gray-300 text-sm"> Add new doctor information here. Click save when you're done. </DialogDescription>
+					</DialogHeader>
+					<div class="grid gap-4 py-4">
+						<AppFormInput name="name" controlled label="Name" placeholder="Adrian Hajdin" class="focus:border-[#82ac9d] focus:border-4 transition-colors ease-in-out duration-500">
+							<template v-slot:leftIcon>
+								<UserRoundIcon class="w-4 h-4" />
+							</template>
+						</AppFormInput>
+						<AppFormInput name="email" controlled label="Email address" placeholder="adrian@jsmastery.org" class="focus:border-[#82ac9d] focus:border-4 duration-500 ease-in-out">
+							<template v-slot:leftIcon>
+								<MailIcon class="w-4 h-4" />
+							</template>
+						</AppFormInput>
+						<AppFormInput name="phoneNo" label="Phone number" controlled placeholder="0704260663" class="focus:border-[#82ac9d] focus:border-4 duration-500 ease-in-out">
+							<template v-slot:leftIcon>
+								<PhoneIcon class="w-4 h-4" />
+							</template>
+						</AppFormInput>
+						<AppFormInput name="speciality" label="Speciality" controlled placeholder="e.g. Dentistry, Pharmacists" class="focus:border-[#82ac9d] focus:border-4 duration-500 ease-in-out transition-colors" />
+					</div>
+					<DialogFooter>
+						<Button :disabled="loading" class="bg-[#24AE7C] hover:bg-[#127D6B] transition-colors duration-300 ease-in-out h-12 text-base font-semibold" size="lg" type="submit">
+							<LoaderCircle class="w-20 h-20 animate-spin mr-2" v-if="loading" />
+							Save</Button
+						>
+					</DialogFooter>
+				</form>
+			</DialogContent>
+		</Dialog>
+	</div>
 </template>
