@@ -39,19 +39,19 @@ const emit = defineEmits(["update:modelValue"]);
 </script>
 <template>
 	<FormField v-if="props.controlled" :name="name!">
-		<FormItem class="space-y-3">
+		<FormItem class="space-y-3 flex flex-col">
 			<FormLabel v-if="label" class="text-[#ABB8C4]">{{ label }}</FormLabel>
 			<Popover v-model:open="open">
 				<PopoverTrigger as-child>
 					<FormControl>
-						<Button variant="outline" role="combobox" :class="cn('w-[200px] justify-between', !selectedValue && 'text-muted-foreground')">
+						<Button variant="outline" role="combobox" :class="cn('w-[430px] justify-between bg-inherit hover:bg-inherit hover:text-inherit h-12', !selectedValue && 'text-muted-foreground',triggerClassName)">
 							{{ selectedValue ? props.options.find((opt) => opt.value === selectedValue)?.label : placeholder }}
 							<ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
 						</Button>
 					</FormControl>
 				</PopoverTrigger>
-				<PopoverContent class="w-[200px] p-0">
-					<Command>
+				<PopoverContent :class="cn('w-[430px] p-0 bg-gray-800 text-white', contentContainerClassName)">
+					<Command class="bg-gray-800 text-white w-full">
 						<CommandInput :placeholder="props.searchPlaceholder" />
 						<CommandEmpty>
 							{{ props.emptySearch }}
@@ -62,9 +62,12 @@ const emit = defineEmits(["update:modelValue"]);
 									v-for="opt in props.options"
 									:key="opt.value"
 									:value="opt.value"
+									class="data-[highlighted]:bg-gray-600"
 									@select="
-										() => {
-											props.setSelectedValue && props.setSelectedValue(props.name!, opt.value);
+										(ev) => {
+											if (typeof ev.detail.value === 'string') {
+												props.setSelectedValue && props.setSelectedValue(props.name!, ev.detail.value);
+											}
 											open = false;
 										}
 									">

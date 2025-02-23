@@ -25,8 +25,8 @@ export default defineNuxtConfig({
 		},
 		layoutTransition: {
 			name: "transition-all",
-			mode: "out-in"
-		}
+			mode: "out-in",
+		},
 	},
 	runtimeConfig: {
 		db: {
@@ -38,6 +38,9 @@ export default defineNuxtConfig({
 		},
 		resend: {
 			apiKey: process.env.RESEND_API_KEY!,
+		},
+		firebase: {
+			adminServiceAccountBase64: process.env.SERVICE_ACCOUNT_BASE64!,
 		},
 	},
 	auth: {

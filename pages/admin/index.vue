@@ -10,6 +10,9 @@ import Button from "~/components/ui/button/Button.vue";
 import { appointmentsData } from "~/data/appointments-data";
 import { getInitials } from "~/utils";
 import ConfirmAppointmentDialog from "~/components/confirm/appointment-dialog.vue";
+import type { TDoctorData } from "~/types/Doctor";
+import type { IApiResponseType } from "~/types/Api";
+import type { TApiError } from "~/types/Error";
 
 const df = new DateFormatter("en-US", {
 	dateStyle: "long",
@@ -20,6 +23,8 @@ const { data } = useAuth();
 const account = computed(() => {
 	return data.value?.user;
 });
+
+const doctors = ref<TDoctorData[]>([]);
 
 const icons = {
 	[AppointmentStatus.SCHEDULED]: {
@@ -93,6 +98,24 @@ const columns: ColumnDef<IAppointment>[] = [
 		},
 	},
 ];
+
+const getAllDoctors = async () => {
+	const { data, error } = await useFetch<IApiResponseType<TDoctorData[]>, TApiError>("/api/doctors", { method: "GET" });
+
+	if (!error.value) {
+		console.log('data.val', data.value)
+		if (data.value?.status === "success") {
+			doctors.value = data.value.data! ?? [];
+			console.log('data.value.data!', data.value.data!)
+		}
+	} else {
+		console.log("err", error.value);
+	}
+};
+
+onMounted(() => {
+	getAllDoctors();
+});
 </script>
 <template>
 	<Title>Admin</Title>
