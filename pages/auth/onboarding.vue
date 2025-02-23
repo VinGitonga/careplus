@@ -66,6 +66,19 @@ const acceptedTerms = ref<string[]>([]);
 const loading = ref<boolean>(false);
 const filesData = ref<{ name: string; url: string }[]>([]);
 
+const { data: respDoctorsVal, error } = useFetch<IApiResponseType<{ name: string; doctorId: string; speciality: string; userId: string }[]>, TApiError>("/api/doctors/onboarding", { method: "GET" });
+
+console.log('respDoctorsVal', respDoctorsVal)
+console.log('error', error)
+const doctorsOptions = computed(() => {
+	console.log('respDoctorsVal', respDoctorsVal?.value)
+	if (respDoctorsVal?.value && respDoctorsVal?.value?.status === "success") {
+		return respDoctorsVal.value.data?.map((item) => ({ label: item.name, value: item.doctorId }));
+	}
+
+	return [];
+});
+
 const formObject = z.object({
 	name: z.string().min(1, "Name is required"),
 	email: z.string().email({ message: "Invalid Email Address" }),
@@ -224,8 +237,7 @@ const updateFieldValue = (name: string, value?: string) => {
 										triggerClassName="w-[430px] h-12 mt-1"
 										:max-date="today(getLocalTimeZone())"
 										:selected-value="values.dob"
-										:set-selected-value="updateFieldValue"
-									/>
+										:set-selected-value="updateFieldValue" />
 									<AppFormRadioGroup controlled name="gender" label="Gender" :options="generateOptions(genderOptions, true)" group-class-name="flex gap-3" item-class-name="px-3 py-3.5 border border-dashed rounded-xl" />
 									<AppFormInput controlled label="Address" name="address" placeholder="ex: 14 street, New York, NY-501" />
 									<AppFormInput controlled name="occupation" label="Occupation" placeholder="ex: Software Engineer" />
@@ -245,7 +257,7 @@ const updateFieldValue = (name: string, value?: string) => {
 											controlled
 											name="primaryPhysicianId"
 											label="Primary care physician"
-											:options="options"
+											:options="doctorsOptions!"
 											v-model:model-value="physician"
 											trigger-class-name="w-full"
 											:selected-value="values.primaryPhysicianId"
