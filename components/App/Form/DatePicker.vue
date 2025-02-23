@@ -41,7 +41,7 @@ const value = computed({
 <template>
 	<FormField v-if="props.controlled" :name="name!">
 		<FormItem class="flex flex-col items-start gap-y-4">
-			<FormLabel v-if="label" class="text-[#ABB8C4">
+			<FormLabel v-if="label" class="text-[#ABB8C4]">
 				{{ label }}
 			</FormLabel>
 			<Popover>

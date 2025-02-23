@@ -187,10 +187,10 @@ const updateFieldValue = (name: string, value?: string) => {
 </script>
 <template>
 	<Title>Onboarding</Title>
-	<div class="h-screen bg-[#131619] text-white overflow-y-scroll">
-		<div class="grid grid-cols-10">
-			<div class="col-span-7">
-				<div class="px-4 md:px-16 py-10 flex flex-col h-screen md:h-full overflow-y-scroll bg-inherit">
+	<div class="min-h-screen bg-[#131619] text-white">
+		<div class="grid grid-cols-1 md:grid-cols-10">
+			<div class="col-auto md:col-span-7">
+				<div class="px-4 md:px-16 py-10 flex flex-col h-screen md:h-full bg-[#131619]">
 					<div class="flex items-center gap-x-2">
 						<img src="/images/Logomark.png" alt="" class="w-10 h-10" />
 						<h1 class="text-xl font-bold">CarePulse</h1>
@@ -314,7 +314,7 @@ const updateFieldValue = (name: string, value?: string) => {
 					</form>
 				</div>
 			</div>
-			<div class="col-span-3 max-h-screen sticky">
+			<div class="hidden md:block md:col-span-3 h-screen sticky">
 				<img src="/images/Onboarding-Img.png" alt="" class="h-full w-full object-cover" />
 			</div>
 		</div>

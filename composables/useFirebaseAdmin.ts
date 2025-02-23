@@ -8,8 +8,6 @@ export default function useFirebaseAdmin() {
 		const decodedServiceAccount = Buffer.from(useRuntimeConfig().firebase.adminServiceAccountBase64, "base64").toString("utf-8");
 		const serviceAccount = JSON.parse(decodedServiceAccount);
 
-		console.log('serviceAccount.project_id', serviceAccount.project_id);
-
 		app = initializeApp({
 			credential: cert(serviceAccount),
 			databaseURL: `${serviceAccount.project_id}.firebaseio.com`,

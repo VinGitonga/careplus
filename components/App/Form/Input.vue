@@ -43,7 +43,7 @@ const emit = defineEmits(["update:modelValue"]);
 						<EyeClosedIcon v-else class="w-4 h-4" aria-hidden="true" />
 					</Button>
 				</div>
-				<Input v-else :type="type" :placeholder="placeholder" v-bind="componentField" :class="class" class="w-full" />
+				<Input v-else :type="type" :placeholder="placeholder" v-bind="componentField" :class="cn(props.class)" class="w-full" />
 			</FormControl>
 			<FormDescription v-if="helperText">{{ helperText }}</FormDescription>
 			<FormMessage />

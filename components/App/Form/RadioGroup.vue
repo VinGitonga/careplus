@@ -28,7 +28,7 @@ const emit = defineEmits(["update:modelValue"]);
 		<FormItem class="space-y-3">
 			<FormLabel v-if="label" class="text-[#ABB8C4]">{{ label }}</FormLabel>
 			<FormControl>
-				<RadioGroup class="flex flex-col space-y-1" v-bind="componentField">
+				<RadioGroup class="flex flex-col md:flex-row space-y-1" v-bind="componentField">
 					<FormItem class="flex items-center space-y-0 gap-x-3" :key="opt.value" v-for="opt in options">
 						<FormControl>
 							<RadioGroupItem :value="opt.value" />
