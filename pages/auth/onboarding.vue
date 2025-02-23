@@ -66,12 +66,11 @@ const acceptedTerms = ref<string[]>([]);
 const loading = ref<boolean>(false);
 const filesData = ref<{ name: string; url: string }[]>([]);
 
-const { data: respDoctorsVal, error } = useFetch<IApiResponseType<{ name: string; doctorId: string; speciality: string; userId: string }[]>, TApiError>("/api/doctors/onboarding", { method: "GET" });
+const router = useRouter()
 
-console.log('respDoctorsVal', respDoctorsVal)
-console.log('error', error)
+const { data: respDoctorsVal } = useFetch<IApiResponseType<{ name: string; doctorId: string; speciality: string; userId: string }[]>, TApiError>("/api/doctors/onboarding", { method: "GET" });
+
 const doctorsOptions = computed(() => {
-	console.log('respDoctorsVal', respDoctorsVal?.value)
 	if (respDoctorsVal?.value && respDoctorsVal?.value?.status === "success") {
 		return respDoctorsVal.value.data?.map((item) => ({ label: item.name, value: item.doctorId }));
 	}
@@ -185,13 +184,46 @@ const onDrop = async (files: File[]) => {
 const { isDragActive, getRootProps, getInputProps } = useDropzone({ accept: ".jpg,.png,.pdf", maxSize: 10 * 1024 * 1024, onDrop });
 
 const onSubmit = handleSubmit(async (data) => {
-	console.log("data", data);
 	loading.value = true;
 
-	setTimeout(() => {
+	const { acceptedTerms, name, email, phoneNo, ...rest } = data;
+
+	const userData = {
+		name,
+		email,
+		phoneNo,
+		role: "patient",
+	};
+
+	const patientData = {
+		...rest,
+		acceptedReceiveTreatment: acceptedTerms.includes("receive-treatment"),
+		acceptedDiscloseHealthInfo: acceptedTerms.includes("disclose-health-info"),
+		acceptedPrivacyPolicy: acceptedTerms.includes("agree-privacy-policy"),
+	};
+
+	const { data: respData, error } = await useFetch<IApiResponseType, TApiError>("/api/users/save-patient", {
+		method: "POST",
+		body: {
+			userInfo: userData,
+			patientInfo: patientData,
+		},
+	});
+
+	if (error.value) {
+		toast.error("Failed to save patient. Please try again.");
 		loading.value = false;
-		toast.success("Form Submitted successfully.");
-	}, 3000);
+		return;
+	}
+
+	if (respData?.value?.status === "success") {
+		toast.success("Patient saved successfully.");
+		resetForm();
+		router.push("/auth/login");
+	} else {
+		toast.error(respData?.value?.msg ?? "Failed to save patient. Please try again.");
+		loading.value = false;
+	}
 });
 
 const updateFieldValue = (name: string, value?: string) => {
@@ -200,10 +232,10 @@ const updateFieldValue = (name: string, value?: string) => {
 </script>
 <template>
 	<Title>Onboarding</Title>
-	<div class="min-h-screen bg-[#131619] text-white">
+	<div class="min-h-screen h-full bg-[#131619] text-white">
 		<div class="grid grid-cols-1 md:grid-cols-10">
 			<div class="col-auto md:col-span-7">
-				<div class="px-4 md:px-16 py-10 flex flex-col h-screen md:h-full bg-[#131619]">
+				<div class="px-4 md:px-16 py-10 flex flex-col min-h-screen md:h-full bg-[#131619]">
 					<div class="flex items-center gap-x-2">
 						<img src="/images/Logomark.png" alt="" class="w-10 h-10" />
 						<h1 class="text-xl font-bold">CarePulse</h1>
@@ -268,7 +300,7 @@ const updateFieldValue = (name: string, value?: string) => {
 									<AppFormTextArea controlled name="allergies" label="Allergies (if any)" placeholder="ex: Peanuts, Penicillin, Pollen" />
 									<AppFormTextArea controlled name="currentMedications" label="Current Medications" placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg" class="h-auto" />
 									<AppFormTextArea controlled name="familyHistory" label="Family medical history (if relevant)" placeholder="ex: Mother had breast cancer" />
-									<AppFormTextArea controlled name="familyHistory" label="Past medical history" placeholder="ex: Asthma diagnosis in childhood" />
+									<AppFormTextArea controlled name="pastMedicalHistory" label="Past medical history" placeholder="ex: Asthma diagnosis in childhood" />
 								</div>
 							</div>
 							<div class="mt-16 space-y-7">

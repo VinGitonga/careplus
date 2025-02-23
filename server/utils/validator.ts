@@ -6,6 +6,7 @@ class Validator {
 		try {
 			schema.parse(data);
 		} catch (err) {
+			console.log("err", err);
 			let errorItem = err as ZodError;
 			const errorObj = {} as any;
 			for (const error of errorItem.issues) {

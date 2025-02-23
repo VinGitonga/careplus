@@ -3,7 +3,7 @@ import { getServerSession } from "#auth";
 import { ApiResponseType } from "~/types/Api";
 
 export default defineEventHandler(async (event) => {
-	const nonProtectedRoutes = ["/api", "/api/auth/*", "/api/users", "/api/users/otp/request", "/api/users/save-admin", "/api/upload/*", "/api/doctors/onboarding"];
+	const nonProtectedRoutes = ["/api", "/api/auth/*", "/api/users", "/api/users/otp/request", "/api/users/save-admin", "/api/users/save-patient", "/api/upload/*", "/api/doctors/onboarding"];
 
 	const isApiRoute = event.node.req.url!.startsWith("/api");
 

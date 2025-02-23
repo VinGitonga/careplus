@@ -1,12 +1,14 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "~/server/db/get-db";
+import { EmailTemplate, sendEmail } from "~/server/emails/send";
 import { patientInsertSchema, patientsTable } from "~/server/schemas/patient.schema";
 import { userInsertSchema, usersTable } from "~/server/schemas/user.schema";
 import { ApiResponseType, IApiResponseType } from "~/types/Api";
 
 export default defineEventHandler(async (event): Promise<IApiResponseType> => {
 	const body = await readBody(event);
+
 
 	const { userInfo, patientInfo } = body;
 	const userData = userInfo as Omit<z.infer<typeof userInsertSchema>, "id" | "createdAt" | "updatedAt" | "otp" | "status">;
@@ -31,6 +33,12 @@ export default defineEventHandler(async (event): Promise<IApiResponseType> => {
 	};
 
 	await db.insert(patientsTable).values(patientsInfo);
+
+	try {
+		await sendEmail({ to: [createdUser?.[0].email], subject: "Welcome to Carepulse", template: EmailTemplate.WELCOME, data: { name: createdUser?.[0].name, subject: "Welcome to Carepulse" } });
+	} catch (err) {
+		console.log("err", err);
+	}
 
 	setResponseStatus(event, 201, "Created");
 	return {
