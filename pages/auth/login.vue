@@ -77,11 +77,12 @@ const handleOtpComplete = async (vals: string[]) => {
 		if (resp?.error) {
 			toast.error(resp?.error ?? "Invalid OTP", { id });
 		} else {
+			console.log('resp', resp)
 			toast.success("OTP Verified successfully", { id });
 			otpDialog.value = false;
 			resetForm();
 			// redirect to the appropriate page
-			router.push("/admin");
+			router.push("/dashboard");
 		}
 	} catch (err: any) {
 		toast.error(err?.response?.data?.msg ?? err?.message ?? "Invalid OTP");
