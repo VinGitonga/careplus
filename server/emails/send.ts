@@ -4,6 +4,7 @@ import handlebars from "handlebars";
 export enum EmailTemplate {
 	WELCOME = "welcome",
 	OTP = "otp",
+	APPOINTMENT_CONFIRMATION = 'appointment-confirmation'
 }
 
 interface ISendEmailOptions {

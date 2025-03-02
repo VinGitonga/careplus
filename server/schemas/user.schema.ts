@@ -6,7 +6,7 @@ import { doctorsTable } from "./doctor.schema";
 import { createInsertSchema } from "drizzle-zod";
 
 export const userStatus = pgEnum("userStatus", ["active", "suspended", "deleted"]);
-export const userRole = pgEnum("role", ["admin", "patient", "doctor"]);
+export const userRole = pgEnum("userRole", ["admin", "patient", "doctor"]);
 
 export const usersTable = pgTable("users", {
 	...baseSchema,
