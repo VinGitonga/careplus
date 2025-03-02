@@ -125,7 +125,6 @@ onMounted(() => {
 				<h1 class="text-4xl font-bold">Welcome, {{ account?.name }}</h1>
 				<p class="text-lg font-medium text-[#ABB8C4]">Start day with managing new appointments</p>
 			</div>
-			<NewDoctorDialog @on-save="onSaveDoctor" />
 		</div>
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
 			<div class="px-6 py-6 border-t border-t-white/10 w-full rounded-xl bg-gradient-to-r from-[#D7EDED29] from-[16%] to-[#CCEBEB00]">

@@ -82,10 +82,11 @@ const columns: ColumnDef<IAppointment>[] = [
 		<Title>Patient</Title>
 		<div class="text-white font-sans">
 			<div class="flex items-center justify-between">
-				<div class="mb-10 space-y-2">
+				<div class=" space-y-2">
 					<h1 class="text-4xl font-bold">Hey, {{ account?.name }} 👋</h1>
 					<p class="text-lg font-medium text-[#ABB8C4]">Request a new appointment in 10 seconds</p>
 				</div>
+				<NewAppointmentDialog />
 			</div>
 			<div class="mt-10">
 				<DataTable :columns="columns" :data="appointmentsData" />

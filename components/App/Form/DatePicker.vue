@@ -55,7 +55,7 @@ const value = computed({
 						</Button>
 					</FormControl>
 				</PopoverTrigger>
-				<PopoverContent class="w-auto p-0">
+				<PopoverContent class="w-auto p-0 bg-[#181d23] text-white">
 					<Calendar
 						:model-value="value"
 						:min-value="props.minDate"
