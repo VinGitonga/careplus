@@ -4,6 +4,7 @@ import { getLocalTimeZone, today, type DateValue } from "@internationalized/date
 import { toTypedSchema } from "@vee-validate/zod";
 import { LoaderCircleIcon } from "lucide-vue-next";
 import { useForm } from "vee-validate";
+import { toast } from "vue-sonner";
 import { z } from "zod";
 import type { IApiResponseType } from "~/types/Api";
 import type { TApiError } from "~/types/Error";
@@ -11,6 +12,13 @@ const { isOpen, onOpen, onClose } = useDisclosure();
 
 const loading = ref<boolean>(false);
 const expectedAppointmentDate = ref<DateValue>();
+const emits = defineEmits<{ onSave: [] }>();
+
+const { data } = useAuth();
+
+const account = computed(() => {
+	return data.value?.user;
+});
 
 const { data: respDoctorsVal } = useFetch<IApiResponseType<{ name: string; doctorId: string; speciality: string; userId: string }[]>, TApiError>("/api/doctors/onboarding", { method: "GET" });
 
@@ -46,7 +54,30 @@ const updateFieldValue = (name: string, value?: string) => {
 	setFieldValue(name as any, value);
 };
 
-const onSubmit = handleSubmit(async (data) => {});
+const onSubmit = handleSubmit(async (data) => {
+	const info = {
+		patientId: account.value?.patientInfo?.id!,
+		doctor: data.doctor,
+		reason: data.reason,
+		comments: data.comments,
+		appointmentDate: new Date(data.appointmentDate).toISOString(),
+	};
+
+	const id = toast.loading("Submitting ...");
+	loading.value = true;
+
+	const { data: _respVal, error } = await useFetch<IApiResponseType, TApiError>("/api/appointments", { method: "POST", body: info });
+
+	if (!error.value) {
+		toast.success("Appointment Set successfully", { id });
+		resetForm();
+		loading.value = false;
+		emits("onSave");
+		onClose();
+	} else {
+		toast.error(error?.value?.data?.data?.msg! ?? "Unable to submit the appointment at the moment. Try again later");
+	}
+});
 </script>
 <template>
 	<div>
@@ -85,7 +116,7 @@ const onSubmit = handleSubmit(async (data) => {});
 								:min-date="today(getLocalTimeZone())" />
 						</div>
 						<div class="w-full col-auto md:col-span-2">
-							<Button :disabled="loading" class="bg-[#24AE7C] w-full hover:bg-[#127D6B] transition-colors duration-300 ease-in-out h-12 text-base font-semibold" size="lg" @click="onSubmit()">
+							<Button type="submit" :disabled="loading" class="bg-[#24AE7C] w-full hover:bg-[#127D6B] transition-colors duration-300 ease-in-out h-12 text-base font-semibold" size="lg">
 								<LoaderCircleIcon class="w-20 h-20 animate-spin mr-2" v-if="loading" />
 								Submit and Continue</Button
 							>
