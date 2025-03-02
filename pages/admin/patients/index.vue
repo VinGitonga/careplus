@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import type { ColumnDef } from "@tanstack/vue-table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { IApiResponseType } from "~/types/Api";
-import type { TDoctorData } from "~/types/Doctor";
-import type { TApiError } from "~/types/Error";
 import { CheckIcon, HourglassIcon, XIcon } from "lucide-vue-next";
+import type { IApiResponseType } from "~/types/Api";
+import type { TApiError } from "~/types/Error";
+import type { TPatientData } from "~/types/Patient";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 
 definePageMeta({ layout: "admin" });
 
-const doctors = ref<TDoctorData[]>([]);
+const patients = ref<TPatientData[]>([]);
 
 const icons = {
 	["active"]: {
@@ -29,7 +29,7 @@ const icons = {
 	},
 };
 
-const columns: ColumnDef<TDoctorData>[] = [
+const columns: ColumnDef<TPatientData>[] = [
 	{
 		accessorKey: "user.name",
 		header: () => h("div", { class: "capitalize text-white" }, "Patient"),
@@ -52,10 +52,10 @@ const columns: ColumnDef<TDoctorData>[] = [
 		},
 	},
 	{
-		accessorKey: "speciality",
-		header: () => h("div", { class: "capitalize text-white" }, "Speciality"),
+		accessorKey: "gender",
+		header: () => h("div", { class: "capitalize text-white" }, "Gender"),
 		cell({ row }) {
-			const textItem = h("span", null, row.original.speciality);
+			const textItem = h("span", null, row.original.gender);
 			return h(Badge, { class: `capitalize` }, textItem);
 		},
 	},
@@ -70,12 +70,12 @@ const columns: ColumnDef<TDoctorData>[] = [
 	},
 ];
 
-const getAllDoctors = async () => {
-	const { data, error } = await useFetch<IApiResponseType<TDoctorData[]>, TApiError>("/api/doctors", { method: "GET" });
+const getAllPatients = async () => {
+	const { data, error } = await useFetch<IApiResponseType<TPatientData[]>, TApiError>("/api/patients", { method: "GET" });
 
 	if (!error.value) {
 		if (data.value?.status === "success") {
-			doctors.value = data.value.data! ?? [];
+			patients.value = data.value.data! ?? [];
 		}
 	} else {
 		console.log("err", error.value);
@@ -83,18 +83,17 @@ const getAllDoctors = async () => {
 };
 
 onMounted(() => {
-	getAllDoctors();
+	getAllPatients();
 });
 </script>
 <template>
-	<Title>Doctors</Title>
+	<Title>Patients</Title>
 	<div class="text-white font-sans">
 		<div class="mb-10 flex items-center justify-between">
-			<h1 class="text-4xl font-bold">Doctors</h1>
-			<NewDoctorDialog @on-save="getAllDoctors" />
+			<h1 class="text-4xl font-bold">Patients</h1>
 		</div>
-		<div class="">
-			<DataTable :columns="columns" :data="doctors" />
+        <div class="">
+			<DataTable :columns="columns" :data="patients" />
 		</div>
 	</div>
 </template>
