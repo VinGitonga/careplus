@@ -1,6 +1,6 @@
 {
-  "id": "1c1be02c-15ea-481a-ac68-ae102274920e",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "49667ef0-c113-49f9-ad16-6869e57a8431",
+  "prevId": "1c1be02c-15ea-481a-ac68-ae102274920e",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -61,7 +61,7 @@
         },
         "status": {
           "name": "status",
-          "type": "status",
+          "type": "appointmentStatus",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
@@ -391,7 +391,7 @@
         },
         "status": {
           "name": "status",
-          "type": "status",
+          "type": "userStatus",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
@@ -429,13 +429,13 @@
     }
   },
   "enums": {
-    "public.status": {
-      "name": "status",
+    "public.appointmentStatus": {
+      "name": "appointmentStatus",
       "schema": "public",
       "values": [
-        "active",
-        "suspended",
-        "deleted"
+        "processing",
+        "approved",
+        "rejected"
       ]
     },
     "public.role": {
@@ -445,6 +445,15 @@
         "admin",
         "patient",
         "doctor"
+      ]
+    },
+    "public.userStatus": {
+      "name": "userStatus",
+      "schema": "public",
+      "values": [
+        "active",
+        "suspended",
+        "deleted"
       ]
     }
   },
