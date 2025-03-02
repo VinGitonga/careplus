@@ -25,6 +25,8 @@ export default defineEventHandler(async (event): Promise<ApiResponseType<SelectA
 		await sendEmail({ to: [userData?.email!], subject: "Appointment Received", template: EmailTemplate.APPOINTMENT_CONFIRMATION });
 	} catch (err) {}
 
+	setResponseStatus(event, 200, "CREATED");
+
 	return {
 		status: "success",
 		msg: "Appointment created successfully",
