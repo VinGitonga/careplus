@@ -22,7 +22,12 @@ export default defineEventHandler(async (event): Promise<ApiResponseType<SelectA
 
 		const userData = patientInfo[0].users;
 
-		await sendEmail({ to: [userData?.email!], subject: "Appointment Received", template: EmailTemplate.APPOINTMENT_CONFIRMATION });
+		const emailData = {
+			name: userData?.name,
+			link: `https://carepulse.vingitonga.xyz`
+		}
+
+		await sendEmail({ to: [userData?.email!], subject: "Appointment Received", template: EmailTemplate.APPOINTMENT_CONFIRMATION, data: emailData });
 	} catch (err) {}
 
 	setResponseStatus(event, 200, "CREATED");
