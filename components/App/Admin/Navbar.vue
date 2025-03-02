@@ -17,7 +17,17 @@ const logout = async () => {
 <template>
 	<div class="bg-[#131619] text-white rounded-2xl">
 		<div class="flex items-center justify-between py-4 px-10">
-			<AppLogo />
+			<div class="flex items-center gap-4">
+				<AppLogo />
+				<div class="flex items-center gap-2">
+					<NuxtLink class="hover:underline hover:underline-offset-4" to="/admin/doctors">
+						<p>Doctors</p>
+					</NuxtLink>
+					<NuxtLink class="hover:underline hover:underline-offset-4" to="/admin/patients">
+						<p>Patients</p>
+					</NuxtLink>
+				</div>
+			</div>
 			<DropdownMenu>
 				<DropdownMenuTrigger :as-child="true">
 					<Button>
