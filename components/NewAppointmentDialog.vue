@@ -57,7 +57,7 @@ const updateFieldValue = (name: string, value?: string) => {
 const onSubmit = handleSubmit(async (data) => {
 	const info = {
 		patientId: account.value?.patientInfo?.id!,
-		doctor: data.doctor,
+		doctorId: data.doctor,
 		reason: data.reason,
 		comments: data.comments,
 		appointmentDate: new Date(data.appointmentDate).toISOString(),

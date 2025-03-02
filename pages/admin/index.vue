@@ -7,7 +7,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DateFormatter } from "@internationalized/date";
 import Badge from "~/components/ui/badge/Badge.vue";
 import Button from "~/components/ui/button/Button.vue";
-import { appointmentsData } from "~/data/appointments-data";
 import { getInitials } from "~/utils";
 import ConfirmAppointmentDialog from "~/components/confirm/appointment-dialog.vue";
 import type { TDoctorData } from "~/types/Doctor";
@@ -24,7 +23,7 @@ const account = computed(() => {
 	return data.value?.user;
 });
 
-const doctors = ref<TDoctorData[]>([]);
+const appointmentsData = ref<any[]>([]);
 
 const icons = {
 	[AppointmentStatus.SCHEDULED]: {
@@ -99,14 +98,17 @@ const columns: ColumnDef<IAppointment>[] = [
 	},
 ];
 
-const getAllDoctors = async () => {
-	const { data, error } = await useFetch<IApiResponseType<TDoctorData[]>, TApiError>("/api/doctors", { method: "GET" });
+const getAppointments = async () => {
+	const { data, error } = await useFetch<IApiResponseType, TApiError>("/api/appointments", { method: "GET" });
+
+	console.log('daa', data)
+	console.log('err9', error)
 
 	if (!error.value) {
-		console.log('data.val', data.value)
+		console.log("data.val", data.value);
 		if (data.value?.status === "success") {
-			doctors.value = data.value.data! ?? [];
-			console.log('data.value.data!', data.value.data!)
+			appointmentsData.value = data.value.data! ?? [];
+			console.log("data.value.data!", data.value.data!);
 		}
 	} else {
 		console.log("err", error.value);
@@ -114,7 +116,7 @@ const getAllDoctors = async () => {
 };
 
 onMounted(() => {
-	getAllDoctors();
+	getAppointments();
 });
 </script>
 <template>
